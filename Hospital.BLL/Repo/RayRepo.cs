@@ -1,4 +1,5 @@
-﻿using Hospital.DAL.Database;
+﻿using Hospital.BLL.Repo.IRepo;
+using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.BLL.Repo
 {
-   public class RayRepo
+    public class RayRepo : IRayRepo
     {
         private readonly ApplicationDbContext _context;
         public RayRepo(ApplicationDbContext context)
@@ -31,7 +32,7 @@ namespace Hospital.BLL.Repo
         }
         public void UpdateRay(Ray ray)
         {
-             var existingRay = _context.Rays.FirstOrDefault(r => r.RayId == ray.RayId);
+            var existingRay = _context.Rays.FirstOrDefault(r => r.RayId == ray.RayId);
             if (existingRay != null)
             {
                 existingRay.RayName = ray.RayName;
@@ -52,5 +53,5 @@ namespace Hospital.BLL.Repo
                 _context.SaveChanges();
             }
         }
-        }
+    }
 }

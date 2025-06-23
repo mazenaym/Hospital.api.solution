@@ -1,4 +1,5 @@
-﻿using Hospital.DAL.Database;
+﻿using Hospital.BLL.Repo.IRepo;
+using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace Hospital.BLL.Repo
 {
-   public class AppointmentRepo
+    public class AppointmentRepo : IAppointmentRepo
     {
         private readonly ApplicationDbContext _context;
         public AppointmentRepo(ApplicationDbContext context)
         {
             _context = context;
-            
+
         }
-        public void AddAppointment (Appointment appointment)
+        public void AddAppointment(Appointment appointment)
         {
             _context.Appointments.Add(appointment);
             _context.SaveChanges();
@@ -52,5 +53,5 @@ namespace Hospital.BLL.Repo
                 _context.SaveChanges();
             }
         }
-        }
+    }
 }

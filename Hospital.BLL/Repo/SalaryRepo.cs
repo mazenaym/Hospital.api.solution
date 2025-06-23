@@ -1,4 +1,5 @@
-﻿using Hospital.DAL.Database;
+﻿using Hospital.BLL.Repo.IRepo;
+using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -10,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace Hospital.BLL.Repo
 {
-   public class SalaryRepo
+    public class SalaryRepo : ISalaryRepo
     {
         private readonly ApplicationDbContext _context;
         public SalaryRepo(ApplicationDbContext context)
         {
             _context = context;
         }
-        public void AddSalary (Salary salary)
+        public void AddSalary(Salary salary)
         {
             _context.Add(salary);
             _context.SaveChanges();
@@ -42,7 +43,7 @@ namespace Hospital.BLL.Repo
                 existingSalary.PaymentDate = salary.PaymentDate;
                 existingSalary.PaymentMethod = salary.PaymentMethod;
                 existingSalary.Status = salary.Status;
-                
+
             }
             _context.SaveChanges();
         }

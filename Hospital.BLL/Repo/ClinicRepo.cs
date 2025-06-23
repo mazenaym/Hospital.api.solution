@@ -1,4 +1,5 @@
-﻿using Hospital.DAL.Database;
+﻿using Hospital.BLL.Repo.IRepo;
+using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.BLL.Repo
 {
-  public  class ClinicRepo
+    public class ClinicRepo : IClinicRepo
     {
         private readonly ApplicationDbContext _context;
         public ClinicRepo(ApplicationDbContext context)
@@ -19,7 +20,7 @@ namespace Hospital.BLL.Repo
         {
             _context.Clinics.Add(clinic);
             _context.SaveChanges();
-           
+
         }
         public IEnumerable<Clinic> GetAllClinc()
         {
@@ -49,5 +50,5 @@ namespace Hospital.BLL.Repo
                 _context.SaveChanges();
             }
         }
-        }
+    }
 }
