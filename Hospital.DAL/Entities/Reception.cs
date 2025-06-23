@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Hospital.DAL.Entities
 {
-   public class Reception
+   public class Reception: Appuser
     {
         public string emergencylevel { get; set; }
         public bool status { get; set; }
         public DateTime checkintime { get; set; }
+        public ICollection<Ray> BookedRays { get; set; }
+        public ICollection<Room> BookedRooms { get; set; }
     }
 }

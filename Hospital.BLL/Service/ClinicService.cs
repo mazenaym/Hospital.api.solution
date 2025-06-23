@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.BLL.Service
 {
-   public class ClincService
+   public class ClinicService
     {
     }
 }

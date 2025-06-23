@@ -13,5 +13,10 @@ namespace Hospital.DAL.Entities
         public DateTime appointmentDate { get; set; }
         public string reason { get; set; }
         public bool status { get; set; }
+        public string PatientId { get; set; }
+        public Patient Patient { get; set; }
+
+        public string DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
     }
 }

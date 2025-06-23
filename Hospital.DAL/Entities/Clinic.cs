@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace Hospital.DAL.Entities
 {
-   public class Doctor:Appuser
+   public class Clinic
     {
-        public byte[] DoctorImage { get; set; }
-        public string Specialty { get; set; }
-        public string ConsultationFee { get; set; }
-        public string ClinicSchedule { get; set; }
         public int clinicId { get; set; }
-        public Clinic Clinic { get; set; }
-
+        public string clinicName { get; set; }
+        public int clinicNum { get; set; }
+        public string doctorslist { get; set; }
+        public ICollection<Doctor> Doctors { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
     }
 }

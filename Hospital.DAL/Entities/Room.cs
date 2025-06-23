@@ -14,5 +14,7 @@ namespace Hospital.DAL.Entities
         public int roomPrice { get; set; }
         public int roomNum { get; set; }
         public int roomFloor { get; set; }
+        public ICollection<Nurse> Nurses { get; set; }
+        public ICollection<Patient> Patients { get; set; }
     }
 }
