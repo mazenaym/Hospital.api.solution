@@ -1,6 +1,6 @@
 ﻿using Hospital.DAL.Entities;
 
-namespace Hospital.BLL.Repo.IRepo
+namespace Hospital.DAL.Repo.IRepo
 {
     public interface IAppuserRepo
     {
@@ -9,7 +9,7 @@ namespace Hospital.BLL.Repo.IRepo
         Task DeleteAsync(Guid id);
         Task<IEnumerable<Appuser>> GetAllAsync();
         Task<IEnumerable<Appuser>> GetAllByTypeAsync(string userType);
-        Task<Appuser?> GetByIdAsync(Guid id);
+        Task<object?> GetByIdAsync(Guid id);
         Task<Appuser?> GetByStringIdIdAsync(string id);
         Task<Appuser> GetUserByEmailAsync(string email);
         Task UpdateAsync(Appuser user);

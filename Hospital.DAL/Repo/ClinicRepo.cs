@@ -1,6 +1,7 @@
 ﻿using Hospital.BLL.Repo.IRepo;
 using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
+using Hospital.DAL.Repo.IRepo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,38 @@ namespace Hospital.BLL.Repo
         public ClinicRepo(ApplicationDbContext context)
         {
             _context = context;
+        }
+        public IEnumerable<ClinicAvailableDay> GetClinicAvailableDaysByClinicId(int clinicId)
+        {
+            return _context.ClinicAvailableDays
+                           .Where(d => d.ClinicId == clinicId)
+                           .ToList();
+        }
+        public void AddClinicAvailableDays(IEnumerable<ClinicAvailableDay> clinicAvailableDay)
+        {
+
+            _context.ClinicAvailableDays.AddRange(clinicAvailableDay);
+            _context.SaveChanges();
+        }
+        public void UpdateClinicAvailableDays(int clinicId, IEnumerable<ClinicAvailableDay> newDays)
+        {
+            var existingDays = _context.ClinicAvailableDays
+                                       .Where(d => d.ClinicId == clinicId)
+                                       .ToList();
+
+            _context.ClinicAvailableDays.RemoveRange(existingDays);
+            _context.ClinicAvailableDays.AddRange(newDays);
+
+            _context.SaveChanges();
+        }
+        public void DeleteAvailableDayById(int dayId)
+        {
+            var day = _context.ClinicAvailableDays.Find(dayId);
+            if (day != null)
+            {
+                _context.ClinicAvailableDays.Remove(day);
+                _context.SaveChanges();
+            }
         }
         public void AddClinic(Clinic clinic)
         {
@@ -37,7 +70,7 @@ namespace Hospital.BLL.Repo
             {
                 existingClinic.clinicName = clinic.clinicName;
                 existingClinic.clinicNum = clinic.clinicNum;
-                existingClinic.doctorslist = clinic.doctorslist;
+
             }
             _context.SaveChanges();
         }

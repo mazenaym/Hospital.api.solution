@@ -11,8 +11,9 @@ namespace Hospital.DAL.Entities
         public int clinicId { get; set; }
         public string clinicName { get; set; }
         public int clinicNum { get; set; }
-        public string doctorslist { get; set; }
+        //public string doctorslist { get; set; }
         public ICollection<Doctor> Doctors { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<ClinicAvailableDay> AvailableDays { get; set; }
     }
 }

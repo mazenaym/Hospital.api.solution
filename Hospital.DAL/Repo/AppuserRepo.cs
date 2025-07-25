@@ -1,6 +1,7 @@
 ﻿using Hospital.BLL.Repo.IRepo;
 using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
+using Hospital.DAL.Repo.IRepo;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Hospital.BLL.Repo
         {
             _context = context;
         }
-        public async Task<Appuser?> GetByIdAsync(Guid id)
+        public async Task<object?> GetByIdAsync(Guid id)
         {
             string stringId = id.ToString();
             return await _context.Set<Appuser>().FindAsync(stringId);

@@ -11,14 +11,14 @@ namespace Hospital.DAL.Database
 {
    public class ApplicationDbContext: IdentityDbContext<Appuser>
     {
-        public ApplicationDbContext(DbContextOptions options) :base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : base(options)
         {
-
         }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Appuser> Appusers { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
-       
+        public DbSet<ClinicAvailableDay> ClinicAvailableDays { get; set; }
         public DbSet<Ray> Rays { get; set; }    
       
         public DbSet<Room> Rooms { get; set; }
@@ -31,24 +31,31 @@ namespace Hospital.DAL.Database
                .Property(u => u.usertype)
                .IsRequired();
 
-
+            modelBuilder.Entity<ClinicAvailableDay>()
+            .HasOne(c => c.Clinic)
+            .WithMany(c => c.AvailableDays)
+            .HasForeignKey(c => c.ClinicId);
+           
             // Doctor - Appointments (1-M)
             modelBuilder.Entity<Doctor>()
                 .HasMany(d => d.Appointments)
                 .WithOne(a => a.Doctor)
-                .HasForeignKey(a => a.DoctorId);
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Patient - Appointments (1-M)
             modelBuilder.Entity<Patient>()
                 .HasMany(p => p.Appointments)
                 .WithOne(a => a.Patient)
-                .HasForeignKey(a => a.PatientId);
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Clinic - Doctors (1-M)
             modelBuilder.Entity<Clinic>()
                 .HasMany(c => c.Doctors)
                 .WithOne(d => d.Clinic)
-                .HasForeignKey(d => d.clinicId);
+                .HasForeignKey(d => d.clinicId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Clinic - Appointments (1-M)
             modelBuilder.Entity<Clinic>()
@@ -60,13 +67,19 @@ namespace Hospital.DAL.Database
             modelBuilder.Entity<HR>()
                 .HasMany(h => h.Salaries)
                 .WithOne(s => s.HR)
-                .HasForeignKey(s => s.HRId);
+                .HasForeignKey(s => s.HRId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Salary>()
+    .Property(s => s.Amount)
+    .HasPrecision(18, 2);
 
             // Room - Nurse (1-M)
             modelBuilder.Entity<Room>()
                 .HasMany(r => r.Nurses)
                 .WithOne(n => n.Room)
-                .HasForeignKey(n => n.RoomId);
+                .HasForeignKey(n => n.RoomId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Room - Patients (1-M)
             modelBuilder.Entity<Room>()
@@ -74,16 +87,16 @@ namespace Hospital.DAL.Database
                 .WithMany(p => p.Rooms); // if many-to-many is acceptable
 
             // Reception - Rays
-            modelBuilder.Entity<Reception>()
-                .HasMany(r => r.BookedRays)
-                .WithOne(ray => ray.Reception)
-                .HasForeignKey(ray => ray.ReceptionId);
-
-            // Ray - Patient
             modelBuilder.Entity<Ray>()
-                .HasOne(r => r.Patient)
-                .WithMany(p => p.Rays)
-                .HasForeignKey(r => r.PatientId);
+     .HasOne(r => r.Patient)
+     .WithMany(p => p.Rays)
+     .HasForeignKey(r => r.PatientId)
+     .OnDelete(DeleteBehavior.Restrict); 
+            modelBuilder.Entity<Ray>()
+                .HasOne(r => r.Reception)
+                .WithMany(r => r.BookedRays)
+                .HasForeignKey(r => r.ReceptionId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 

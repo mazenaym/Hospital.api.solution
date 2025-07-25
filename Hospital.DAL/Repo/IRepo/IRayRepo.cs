@@ -1,6 +1,6 @@
 ﻿using Hospital.DAL.Entities;
 
-namespace Hospital.BLL.Repo.IRepo
+namespace Hospital.DAL.Repo.IRepo
 {
     public interface IRayRepo
     {
