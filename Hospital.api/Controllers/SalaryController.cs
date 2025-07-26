@@ -1,5 +1,6 @@
 ﻿using Hospital.BLL.DTO;
 using Hospital.BLL.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace Hospital.api.Controllers
         {
             _salaryService = salaryService;
         }
+        [Authorize(Roles = "Admin,HR")]
         [HttpGet]
         public IActionResult GetAllSalaries()
         {
@@ -24,6 +26,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(salaries);
         }
+        [Authorize(Roles = "Admin,HR,Doctor,Nurse")]
         [HttpGet("{username}")]
         public async Task<IActionResult> GetSalaryByUserNameAsync(string username)
         {
@@ -34,6 +37,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(salaries);
         }
+        [Authorize(Roles = "HR")]
         [HttpPost]
         public async Task<IActionResult> AddSalaryAsync([FromBody] Salarydto dto)
         {
@@ -41,9 +45,18 @@ namespace Hospital.api.Controllers
             {
                 return BadRequest("Salary data is null.");
             }
+            if (User.IsInRole("HR"))
+            {
+                var hrId = User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(hrId))
+                    return Unauthorized("Invalid user token.");
+
+                dto.HRId = hrId;
+            }
             await _salaryService.AddSalaryAsync(dto);
             return CreatedAtAction(nameof(GetAllSalaries), new { id = dto.salaryId }, dto);
         }
+        [Authorize(Roles = "HR")]
         [HttpPut("{username}")]
         public IActionResult UpdateSalary(string username, [FromBody] Salarydto dto)
         {
@@ -59,6 +72,7 @@ namespace Hospital.api.Controllers
             _salaryService.UpdateSalary(dto);
             return NoContent();
         }
+        [Authorize(Roles = "Admin,HR")]
         [HttpDelete("{username}")]
         public IActionResult DeleteSalary(string username)
         {

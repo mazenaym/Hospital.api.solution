@@ -24,7 +24,7 @@ namespace Hospital.BLL.Service.TokenService
             {
               new Claim("userId", user.Id),
               new Claim("email", user.Email),
-              new Claim("role", user.usertype),
+              new Claim(ClaimTypes.Role, user.usertype),
               new Claim("fullname", user.fullname),
 
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

@@ -44,6 +44,7 @@ namespace Hospital.BLL.Repo
                 _context.SaveChanges();
             }
         }
+
         public void DeleteAppointment(int id)
         {
             var appointment = _context.Appointments.FirstOrDefault(a => a.appointmentId == id);

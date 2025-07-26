@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hospital.BLL.DTO;
 using Hospital.BLL.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Hospital.api.Controllers
             _rayService = rayService;
             _mapper = mapper;
         }
+        [Authorize(Roles = "Admin,Reception,Doctor")]
         [HttpGet]
         public IActionResult GetAllRays()
         {
@@ -40,6 +42,7 @@ namespace Hospital.api.Controllers
             //var result = __rayService.GetRayById(id);
             return Ok(ray);
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPost("add-ray")]
         public async Task<IActionResult> AddRay([FromForm] Raydto dto)
         {
@@ -52,6 +55,7 @@ namespace Hospital.api.Controllers
 
             return CreatedAtAction(nameof(GetRayById), new { id = dto.RayId }, dto);
         }
+        [Authorize(Roles = "Doctor")]
         [HttpPut("{id}")]
         public IActionResult UpdateRay(int id, [FromBody] Raydto dto)
         {
@@ -67,6 +71,7 @@ namespace Hospital.api.Controllers
             _rayService.UpdateRay(dto);
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteRay(int id)
         {

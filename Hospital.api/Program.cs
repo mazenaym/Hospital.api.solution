@@ -10,6 +10,7 @@ using Hospital.BLL.Service.TokenService;
 using Hospital.DAL.Database;
 using Hospital.DAL.Entities;
 using Hospital.DAL.Repo.IRepo;
+using Hospital.DAL.Seeder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace Hospital.api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -108,6 +109,16 @@ namespace Hospital.api
     builder.Configuration.GetSection("EmailSettings"));
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Appuser>>();
+
+                await RoleSeeder.SeedRolesAsync(roleManager);
+                await RoleSeeder.SeedAdminUserAsync(userManager);
+                await RoleSeeder.AssignRolesToExistingUsersAsync(userManager);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

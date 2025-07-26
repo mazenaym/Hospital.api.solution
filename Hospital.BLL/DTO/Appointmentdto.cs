@@ -14,7 +14,7 @@ namespace Hospital.BLL.DTO
         public string reason { get; set; }
         public bool status { get; set; }
         public string DoctorId { get; set; }
-        public string PatientId { get; set; }
+        public string? PatientId { get; set; }
         public required int ClinicId { get; set; } 
 
     }

@@ -45,10 +45,12 @@ namespace Hospital.BLL.Service.TokenService
 
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+           
             if (!result.Succeeded)
             {
                 return null;
             }
+            await _userManager.AddToRoleAsync(user, "Patient");
             return await _tokenService.CreateTokenAsync(user);
         }
         public async Task<string?> RegisterDoctorAsync(RegisterRequestDoctordto request)
@@ -75,10 +77,12 @@ namespace Hospital.BLL.Service.TokenService
                 DoctorImage = memoryStream.ToArray(),
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+           
             if (!result.Succeeded)
             {
                 return null;
             }
+            await _userManager.AddToRoleAsync(user, "Doctor");
             return await _tokenService.CreateTokenAsync(user);
         }
         public async Task<string?> RegisterNurseAsync(RegisterRequestNursedto request)
@@ -96,10 +100,12 @@ namespace Hospital.BLL.Service.TokenService
 
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+            
             if (!result.Succeeded)
             {
                 return null;
             }
+            await _userManager.AddToRoleAsync(user, "Nurse");
             return await _tokenService.CreateTokenAsync(user);
         }
         public async Task<string?> RegisterHrAsync(RegisterRequestHrdto request)
@@ -119,10 +125,12 @@ namespace Hospital.BLL.Service.TokenService
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
+           
             if (!result.Succeeded)
             {
                 return null;
             }
+            await _userManager.AddToRoleAsync(user, "HR");
             return await _tokenService.CreateTokenAsync(user);
         }
         public async Task<string?> RegisterReceptionAsync(RegisterRequestRecptiondto request)
@@ -141,10 +149,12 @@ namespace Hospital.BLL.Service.TokenService
                 checkintime = request.checkintime,
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+            
             if (!result.Succeeded)
             {
                 return null;
             }
+            await _userManager.AddToRoleAsync(user, "Reception");
             return await _tokenService.CreateTokenAsync(user);
         }
         public async Task<string?> LoginAsync(string email, string password)

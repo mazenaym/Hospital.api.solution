@@ -1,5 +1,6 @@
 ﻿using Hospital.BLL.DTO;
 using Hospital.BLL.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,6 @@ namespace Hospital.api.Controllers
         {
             _roomService = roomService;
         }
-       
         [HttpGet]
         public IActionResult GetAllRooms()
         {
@@ -36,6 +36,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(room);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddRoom([FromBody] Roomdto dto)
         {
@@ -46,6 +47,7 @@ namespace Hospital.api.Controllers
             _roomService.AddRoom(dto);
             return CreatedAtAction(nameof(GetRoomById), new { id = dto.roomId }, dto);
         }
+        [Authorize(Roles = "Admin,Reception")]
         [HttpPut("{id}")]
         public IActionResult UpdateRoom(int id, [FromBody] Roomdto dto)
         {
@@ -61,6 +63,7 @@ namespace Hospital.api.Controllers
             _roomService.UpdateRoom(dto);
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteRoom(int id)
         {

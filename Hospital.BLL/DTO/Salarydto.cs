@@ -15,5 +15,6 @@ namespace Hospital.BLL.DTO
         public string? PaymentMethod { get; set; }
         public string? Status { get; set; }
         public Guid AppUserId { get; set; }
+        public string? HRId { get; set; }
     }
 }

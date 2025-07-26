@@ -31,16 +31,16 @@ namespace Hospital.BLL.Service
         {
             var salary = _mapper.Map<Salary>(dto);
             _salaryRepo.AddSalary(salary);
-            var userObject = await _appuserRepo.GetByIdAsync(dto.AppUserId);
-            var user = userObject as Appuser;
-            if (user != null)
-            {
-                string toEmail = user.Email;
-                string subject = "تم إيداع الراتب";
-                string body = $"تم إيداع راتبك بقيمة {salary.Amount} بتاريخ {salary.PaymentDate.ToShortDateString()}";
+            //var userObject = await _appuserRepo.GetByIdAsync(dto.AppUserId);
+            //var user = userObject as Appuser;
+            //if (user != null)
+            //{
+            //    string toEmail = user.Email;
+            //    string subject = "تم إيداع الراتب";
+            //    string body = $"تم إيداع راتبك بقيمة {salary.Amount} بتاريخ {salary.PaymentDate.ToShortDateString()}";
 
-                await _emailService.SendEmailAsync(toEmail, subject, body);
-            }
+            //    await _emailService.SendEmailAsync(toEmail, subject, body);
+            //}
         }
         public IEnumerable<Salarydto> GetAllSalaries()
         {

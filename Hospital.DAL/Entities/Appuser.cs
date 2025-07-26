@@ -11,8 +11,8 @@ namespace Hospital.DAL.Entities
     {
         public string fullname { get; set; }
         public string usertype { get; set; }
-        public int age { get; set; }
-        public string gender { get; set; }
+        public int? age { get; set; }
+        public string? gender { get; set; }
 
 
 

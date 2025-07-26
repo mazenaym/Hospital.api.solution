@@ -1,5 +1,6 @@
 ﻿using Hospital.BLL.DTO;
 using Hospital.BLL.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(clinic);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddClinic([FromBody] Clinicdto dto)
         {
@@ -44,6 +46,7 @@ namespace Hospital.api.Controllers
             _clinicService.AddClinic(dto);
             return CreatedAtAction(nameof(GetClinicById), new { id = dto.clinicId }, dto);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult UpdateClinic(int id, [FromBody] Clinicdto dto)
         {
@@ -59,6 +62,7 @@ namespace Hospital.api.Controllers
             _clinicService.UpdateClinic(dto);
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteClinic(int id)
         {
@@ -70,6 +74,7 @@ namespace Hospital.api.Controllers
             _clinicService.DeleteClinic(id);
             return NoContent();
         }
+        [Authorize(Roles = "Admin,Doctor")]
         [HttpPost("available-days")]
         public IActionResult AddClinicAvailableDays([FromBody] IEnumerable<ClinicAvailableDaydto> days)
         {
@@ -91,12 +96,14 @@ namespace Hospital.api.Controllers
             _clinicService.AddClinicAvailableDays(days);
             return Ok("Available days added successfully.");
         }
+        [Authorize(Roles = "Patient,Reception,Doctor")]
         [HttpGet("{clinicId}/available-days")]
         public IActionResult GetClinicAvailableDaysByClinicId(int clinicId)
         {
             var result = _clinicService.GetClinicAvailableDaysByClinicId(clinicId);
             return Ok(result);
         }
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpDelete("{clinicId}/available-days")]
         public IActionResult DeleteClinicAvailableDays(int clinicId)
         {

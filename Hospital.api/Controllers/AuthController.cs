@@ -1,6 +1,7 @@
 ﻿using Hospital.BLL.DTO;
 using Hospital.BLL.Service.TokenService;
 using Hospital.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(new { Token = token });
         }
+        [Authorize(Roles = "Admin,HR")]
         [HttpPost("register doctor")]
         public async Task<IActionResult> RegisterDoctor([FromForm] RegisterRequestDoctordto request)
         {
@@ -79,6 +81,8 @@ namespace Hospital.api.Controllers
             }
             return Ok(new { Token = token });
         }
+        [Authorize(Roles = "Admin")]
+
         [HttpPost("register hr")]
         public async Task<IActionResult> RegisterHR([FromBody] RegisterRequestHrdto request)
         {
@@ -93,6 +97,8 @@ namespace Hospital.api.Controllers
             }
             return Ok(new { Token = token });
         }
+        [Authorize(Roles = "Admin,HR")]
+
         [HttpPost("register reception")]
         public async Task<IActionResult> RegisterReception([FromBody] RegisterRequestRecptiondto request)
         {
@@ -109,6 +115,8 @@ namespace Hospital.api.Controllers
 
 
         }
+        [Authorize(Roles = "Admin,HR")]
+
         [HttpPost("register nurse")]
         public async Task<IActionResult> RegisterNurse([FromBody] RegisterRequestNursedto request)
         {

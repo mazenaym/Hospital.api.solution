@@ -1,5 +1,7 @@
 ﻿using Hospital.BLL.DTO;
 using Hospital.BLL.Service.IService;
+using Hospital.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +16,7 @@ namespace Hospital.api.Controllers
         {
             _appointmentservice = appointmentservice;
         }
-
+        [Authorize(Roles = "Admin,Reception")]
         [HttpGet]
         public IActionResult GetAllAppointments()
         {
@@ -25,6 +27,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(appointments);
         }
+        [Authorize(Roles = "Doctor,Reception")]
         [HttpGet("{id}")]
         public IActionResult GetAppointmentById(int id)
         {
@@ -35,6 +38,7 @@ namespace Hospital.api.Controllers
             }
             return Ok(appointment);
         }
+        [Authorize(Roles = "Reception,Patient")]
         [HttpPost]
         public async Task<IActionResult> AddAppointmentAsync([FromBody] Appointmentdto dto)
         {
@@ -42,9 +46,19 @@ namespace Hospital.api.Controllers
             {
                 return BadRequest("Appointment data is null.");
             }
+            if (User.IsInRole("Patient"))
+            {
+                var patientId = User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(patientId))
+                    return Unauthorized("Invalid user token.");
+
+                dto.PatientId = patientId;
+            }
+
             await _appointmentservice.AddAppointmentAsync(dto);
             return CreatedAtAction(nameof(GetAppointmentById), new { id = dto.appointmentId }, dto);
         }
+        [Authorize(Roles = "Reception")]
         [HttpPut("{id}")]
         public IActionResult UpdateAppointment(int id, [FromBody] Appointmentdto dto)
         {
@@ -60,6 +74,7 @@ namespace Hospital.api.Controllers
             _appointmentservice.UpdateAppointment(dto);
             return NoContent();
         }
+        [Authorize(Roles = "Reception,Patient")]
         [HttpDelete("{id}")]
         public IActionResult DeleteAppointment(int id)
         {
